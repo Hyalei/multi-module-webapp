@@ -7,6 +7,19 @@ spring:
     username: root
     password: 12345600
     driver-class-name: com.mysql.cj.jdbc.Driver
+  # redis 配置
+  redis:
+    # 地址
+    host: 192.168.100.100
+    # 端口，默认为6379
+    port: 6379
+    # 数据库索引
+    database: 0
+    # 密码
+    password: 12345600
+    # 连接超时时间
+    timeout: 10s
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
