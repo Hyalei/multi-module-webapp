@@ -1,0 +1,9 @@
+server:
+  port: 8080
+spring:
+  #数据库
+  datasource:
+    url: jdbc:mysql://${MYSQL-HOST:192.168.100.100}:${MYSQL-PORT:3306}/${MYSQL-DB:jimureport}?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 12345600
+    driver-class-name: com.mysql.cj.jdbc.Driver
