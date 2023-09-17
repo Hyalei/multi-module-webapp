@@ -83,28 +83,28 @@ public class SysUser extends BaseEntity {
      */
     private Date loginDate;
 
-    /**
-     * 部门对象
-     */
-    private SysDept dept;
-
-    /**
-     * 角色对象
-     */
-    private List<SysRole> roles;
-
-    /**
-     * 角色组
-     */
-    private Long[] roleIds;
-
-    /**
-     * 岗位组
-     */
-    private Long[] postIds;
-
-    /**
-     * 角色ID
-     */
-    private Long roleId;
+//    /**
+//     * 部门对象
+//     */
+//    private SysDept dept;
+//
+//    /**
+//     * 角色对象
+//     */
+//    private List<SysRole> roles;
+//
+//    /**
+//     * 角色组
+//     */
+//    private Long[] roleIds;
+//
+//    /**
+//     * 岗位组
+//     */
+//    private Long[] postIds;
+//
+//    /**
+//     * 角色ID
+//     */
+//    private Long roleId;
 }

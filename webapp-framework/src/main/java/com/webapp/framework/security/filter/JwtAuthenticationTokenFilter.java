@@ -34,22 +34,16 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
 
-        LoginUser loginUser = tokenService.getLoginUser(request);
-        boolean aNull = StringUtils.isNull(SecurityUtils.getAuthentication());
-        if (StringUtils.isNotNull(loginUser) && StringUtils.isNull(SecurityUtils.getAuthentication()))
-        {
-            tokenService.verifyToken(loginUser);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        }
-
-        String token = getToken(request);
-//        if (token == null) {
-//            response.setStatus(401);
-//            resolver.resolveException(request, response, null, new TokenParseException("token解析异常"));
-//            return;
+//        LoginUser loginUser = tokenService.getLoginUser(request);
+//        boolean aNull = StringUtils.isNull(SecurityUtils.getAuthentication());
+//        if (StringUtils.isNotNull(loginUser) && StringUtils.isNull(SecurityUtils.getAuthentication()))
+//        {
+//            tokenService.verifyToken(loginUser);
+//            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
+//            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 //        }
+
         filterChain.doFilter(request, response);
     }
 

@@ -4,6 +4,8 @@ import com.webapp.framework.security.filter.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,40 +24,55 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     /**
+     * 自定义用户认证逻辑
+     */
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    /**
      * token认证过滤器
      */
     @Autowired
     private JwtAuthenticationTokenFilter authenticationTokenFilter;
 
+    /**
+     * 解决 无法直接注入 AuthenticationManager
+     *
+     * @return
+     * @throws Exception
+     */
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
     // 配置如何验证身份
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                // 启用基于 HttpServletRequest 的访问限制，开始配置哪些URL需要被保护、哪些不需要被保护
-                .authorizeRequests()
-                // 允许未登陆用户访问的资源
-                .antMatchers( "/favicon.ico","/css/**","/index","/js/**","/images/**").permitAll()
-                // /user/**的这个资源需要有ROLE_USER的这个角色才能访问，不然就会提示拒绝访问
-                .antMatchers("/user/login").permitAll()
-                // 任何尚未匹配的URL只需要验证用户即可访问
-                .anyRequest().authenticated()
+        http.authorizeHttpRequests()
+                .anyRequest().permitAll()
                 .and()
-                // 设置登陆相关的配置
-                .formLogin()
-                // 登陆界面页面跳转URL
-                .loginPage("/login")
-                // 登陆失败页面跳转URL
-                .failureUrl("/login-error")
-                // 登陆成功跳转的页面，可以不设置，默认跳转到需要登陆之前的页面
-                .defaultSuccessUrl("/index")
-                // permitAll表示不需要验证 登录页面，登录失败页面
-                .permitAll()
-                .and()
-                // 权限拒绝页面跳转URL
-                .exceptionHandling().accessDeniedPage("/401");
-        // 注销登录成功，重定向到首页
-        http.logout().logoutSuccessUrl("/");
-        // 添加JWT filter
-        http.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .csrf().disable();
+    }
+
+    /**
+     * 强散列哈希加密实现
+     */
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder()
+    {
+        return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * 身份认证接口
+     * 这里实际上是个冗余写法，因为如果容器中有BCryptPasswordEncoder的bean，则不需要重写此方法
+     * 此方法设置PasswordEncoder的优先级要比bean注入的优先级要高！
+     */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception
+    {
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
 }
