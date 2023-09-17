@@ -2,6 +2,8 @@ package com.webapp.common.core.domain;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.webapp.common.constant.HttpStatus;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
 import java.util.HashMap;
@@ -12,6 +14,8 @@ import java.util.Objects;
  *
  * @author ruoyi
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class AjaxResult extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 

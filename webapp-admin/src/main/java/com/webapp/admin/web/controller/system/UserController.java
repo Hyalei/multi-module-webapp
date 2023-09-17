@@ -3,6 +3,10 @@ package com.webapp.admin.web.controller.system;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.webapp.common.core.controller.BaseController;
+import com.webapp.common.core.domain.entity.SysUser;
+import com.webapp.common.core.domain.model.LoginUser;
+import com.webapp.common.utils.SecurityUtils;
+import com.webapp.framework.web.service.TokenService;
 import com.webapp.system.domain.User;
 import com.webapp.system.mapper.UserMapper;
 import com.webapp.system.service.IUserService;
@@ -21,6 +25,18 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private TokenService tokenService;
+
+
+    @GetMapping("/login")
+    public String login() {
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+//        LoginUser loginUser = new LoginUser(new SysUser(), null);
+        return tokenService.createToken(loginUser);
+    }
+
 
     @GetMapping("/list")
     public String list() {

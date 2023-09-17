@@ -5,8 +5,7 @@ package com.webapp.common.constant;
  *
  * @author ruoyi
  */
-public class HttpStatus
-{
+public class HttpStatus {
     /**
      * 操作成功
      */
